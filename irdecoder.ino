@@ -5,7 +5,7 @@
 #define ON_INDEX 1
 
 // Delay between reads in microseconds
-#define USEC_DELAY 20 
+#define USEC_DELAY 50
 
 // Max time to wait for a pulse
 #define MAX_PULSE_TIME 65000

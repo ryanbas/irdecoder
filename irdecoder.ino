@@ -27,7 +27,7 @@ void setup() {
   if (PYTHON_PRINT) {
     //Serial.println("READY");
   } else {
-    Serial.println("Ready to accept IR");
+    Serial.println("Ready for IR");
   }
 }
 

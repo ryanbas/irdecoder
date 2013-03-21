@@ -9,12 +9,8 @@ def main():
         return
 
     s = serial.Serial('/dev/tty.usbserial-A800eHrB', 9600)
-#while True:
-#    line = s.readline().strip()
-#    if line == 'READY':
-#        break
 
-    num_samples = 5
+    num_samples = 3
     samples = []
 
     print("READY")
@@ -41,21 +37,20 @@ def main():
     averages = []
     zipped = zip(*[sample for sample in samples])
 
-    ons = lambda pulses: [p[0] for p in pulses]
     offs = lambda pulses: [p[1] for p in pulses]
     average = lambda l: sum(l)/num_samples
-    nearestTen = lambda num: num#((num + 5) / 10) * 10
 
-
+    bits = ""
     print signature
     for pulses in zipped:
-        #print(pulses)
-        on_average = average(ons(pulses))
-        off_average = average(offs(pulses))
+        off_sig = average(offs(pulses))
+        bits += "1" if off_sig > 1000 else "0"
 
-        call = "  onOff(" + str(nearestTen(on_average)) + ", " + str(nearestTen(off_average)) + ");"
-        print call
-
+    print "  unsigned int code = (B" + bits[1:8] + " << 24) +"
+    print "                      (B" + bits[9:16] + " << 16) +"
+    print "                      (B" + bits[17:24] + " << 8) +"
+    print "                      (B" + bits[25:32] + ");"
+    print "  sendCode(code);"
     print "}"
 
 main()
